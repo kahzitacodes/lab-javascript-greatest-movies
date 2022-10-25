@@ -3,12 +3,22 @@
 // How could you "clean" a bit this array and make it unified (without duplicates)?
 function getAllDirectors(moviesArray) {
     const directors = moviesArray.map(movie => movie.director);
-    return directors;
+
+    const unifyDirectors = directors.filter(function(director, i) { 
+        return directors.indexOf(director) === i;
+    });
+
+    return unifyDirectors;
 }
 
 // Iteration 2: Steven Spielberg. The best? - How many drama movies did STEVEN SPIELBERG direct?
 function howManyMovies(moviesArray) {
-    const spielbergMovies = moviesArray.filter(movie => movie.director === "Steven Spielberg" && movie.genre.includes("Drama"));
+    const spielbergMovies = moviesArray.filter(movie => {
+        return (
+            movie.director === "Steven Spielberg" && 
+            movie.genre.includes("Drama")
+            )
+    });
 
     return spielbergMovies.length;
 }
@@ -19,10 +29,12 @@ function scoresAverage(moviesArray) {
     if(moviesArray.length === 0){
         return 0;
     }
-    
+
     moviesArray.forEach(element => {
         let hasScore = 'score' in element;
         if (!hasScore) {
+            element['score'] = 0;
+        } else if (element.score === ""){
             element['score'] = 0;
         }
     });
@@ -40,7 +52,7 @@ function scoresAverage(moviesArray) {
 // Iteration 4: Drama movies - Get the average of Drama Movies
 function dramaMoviesScore(moviesArray) {
 
-    const allDramas = moviesArray.filter(movie => movie.genre.includes("Drama"));
+    const allDramas = moviesArray.filter((movie) => movie.genre.includes("Drama"));
 
     if(allDramas.length === 0) {
         return 0;
@@ -50,8 +62,9 @@ function dramaMoviesScore(moviesArray) {
 		return accumulador + movie.score
 	}, 0);
 	
-	const roundScore = Math.round((allDramasScore / moviesArray.length) * 100) / 100;
+	const roundScore = Math.round((allDramasScore / allDramas.length) * 100) / 100;
     return roundScore;
+
 }
 
 // Iteration 5: Ordering by year - Order by year, ascending (in growing order)
@@ -83,7 +96,23 @@ function orderAlphabetically(moviesArray) {
 }
 
 // BONUS - Iteration 7: Time Format - Turn duration of the movies from hours to minutes
-function turnHoursToMinutes(moviesArray) {}
+function turnHoursToMinutes(moviesArray) {
+    const arrCopy = moviesArray.map(movies => {
+        let container = {...movies};
+        let hourPart = parseInt(movies.duration.substring(0, 1)) * 60; 
+        let minutesPart = 0;
+        if(movies.duration.length > 3){
+             minutesPart = parseInt(movies.duration.substring(3)); 	
+        };
+        let timeInMinutes = hourPart + minutesPart;
+        container.duration = timeInMinutes;
+        return container;
+    });
+    return arrCopy;
+}
 
 // BONUS - Iteration 8: Best yearly score average - Best yearly score average
-function bestYearAvg(moviesArray) {}
+function bestYearAvg(moviesArray) {
+
+    
+}
